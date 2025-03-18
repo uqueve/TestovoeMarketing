@@ -37,7 +37,7 @@ class XMLRiverDataSource:
         )
         
         try:
-            soup = BeautifulSoup(response.text, 'lxml')
+            soup = BeautifulSoup(response.text, 'xml')
             docs = soup.find_all('doc')
             
             for doc in docs:
