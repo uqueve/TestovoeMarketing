@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'yandex_parser.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.getenv('SQLITE_PATH', BASE_DIR / 'db.sqlite3'),
+        'NAME': 'db.sqlite3',
     }
 }
 
@@ -142,7 +142,7 @@ CELERY_TIMEZONE = TIME_ZONE
 
 CELERY_BEAT_SCHEDULE = {
     'parse_yandex_search_schedule': {
-        'task': 'yandex_search_parser.tasks.parse_yandex_search_schedule',
+        'task': 'parse_yandex_search_schedule',
         'schedule': crontab(minute="*"),
         'kwargs': {
             'keyword': 'купить автомобиль',
