@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+      - sqlite_data:/app/data
+    environment:
+      - SQLITE_PATH=/app/data/db.sqlite3
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    restart: always
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A yandex_parser worker -l info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - web
+    env_file:
+      - .env
+    restart: always
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A yandex_parser beat -l info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - web
+      - celery
+    env_file:
+      - .env
+    restart: always
+
+  flower:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A yandex_parser flower
+    volumes:
+      - .:/app
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+      - web
+      - celery
+    env_file:
+      - .env
+    restart: always
+
+volumes:
+  sqlite_data:
+  redis_data: 

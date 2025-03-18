@@ -19,54 +19,27 @@
 - redis 5.2+
 - lxml 5.3+
 
-## Установка
+## Установка и запуск
 
 1. Клонируйте репозиторий:
 ```bash
 git clone https://github.com/uqueve/TestovoeMarketing.git
 ```
 
-2. Создайте и активируйте виртуальное окружение:
+2. Установите Docker и Docker Compose
+3. Заполните `.env`:
+
+4. Выполните следующую команду для запуска всех сервисов:
 ```bash
-python -m venv venv
-source venv/bin/activate  # для Linux/Mac
-venv\Scripts\activate  # для Windows
+docker-compose up --build -d
 ```
 
-3. Установите зависимости:
-```bash
-pip install -r requirements.txt
-```
-Установите redis
-
-4. Настройте базу данных:
-```bash
-python manage.py migrate
-```
-
-5. Создайте суперпользователя (опционально):
-```bash
-python manage.py createsuperuser
-```
-
-6. Настройте API ключ XMLRiver:
-   - Откройте файл `.env`
-   - Заполните user id и API ключ для XMLRiver 
-
-## Запуск
-
-### Запуск веб-сервера
-
-```bash
-python manage.py runserver
-```
-
-После запуска веб-сервер будет доступен по адресу http://127.0.0.1:8000/
-
-### Запуск Celery для выполнения задач
-
-```bash
-celery -A yandex_parser worker -l info
+Сервисы:
+- **web**: Django приложение на порту 8000
+- **redis**: Redis сервер
+- **celery**: Celery worker для выполнения задач
+- **celery-beat**: Celery Beat для планирования задач
+- **flower**: Celery Flower для мониторинга задач на порту 5555
 ```
 
 ## Использование

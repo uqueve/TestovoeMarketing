@@ -16,3 +16,8 @@ def parse_yandex_search(keyword: str, location: str, device: str) -> str:
     except Exception as e:
         print(f'Ошибка при выполнении задачи: {e}')
         return False
+
+
+@shared_task(name="parse_yandex_search_schedule")
+def parse_yandex_search_schedule(keyword="купить автомобиль", location="Москва", device="desktop"):
+    parse_yandex_search.delay(keyword, location, device)

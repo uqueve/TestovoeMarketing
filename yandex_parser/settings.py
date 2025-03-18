@@ -13,8 +13,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from celery.schedules import crontab
 
-load_dotenv()
+load_dotenv('.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'django_celery_beat',
     
     'yandex_search_parser',
 ]
@@ -82,7 +85,7 @@ WSGI_APPLICATION = 'yandex_parser.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.getenv('SQLITE_PATH', BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -130,12 +133,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Настройки Celery
 CELERY_TASK_ALWAYS_EAGER = False
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+
+CELERY_BEAT_SCHEDULE = {
+    'parse_yandex_search_schedule': {
+        'task': 'yandex_search_parser.tasks.parse_yandex_search_schedule',
+        'schedule': crontab(minute="*"),
+        'kwargs': {
+            'keyword': 'купить автомобиль',
+            'location': 'Москва',
+            'device': 'desktop'
+        },
+    },
+}
 
 XMLRIVER_API_KEY = os.getenv('XMLRIVER_API_KEY')
 XMLRIVER_USER = os.getenv('XMLRIVER_USER')
