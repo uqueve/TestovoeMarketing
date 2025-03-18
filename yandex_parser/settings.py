@@ -42,8 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'django_celery_beat',
-    
     'yandex_search_parser',
 ]
 
