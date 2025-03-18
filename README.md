@@ -21,8 +21,7 @@
 
 1. Клонируйте репозиторий:
 ```bash
-git clone <url-репозитория>
-cd <директория-проекта>
+git clone https://github.com/uqueve/TestovoeMarketing.git
 ```
 
 2. Создайте и активируйте виртуальное окружение:
