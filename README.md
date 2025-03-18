@@ -16,6 +16,8 @@
 - Django 5.1+
 - Celery 5.3+
 - Requests
+- redis 5.2+
+- lxml 5.3+
 
 ## Установка
 
