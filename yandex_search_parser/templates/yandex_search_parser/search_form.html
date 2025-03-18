@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Поиск в Яндексе{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h2>Поиск в Яндексе</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="keyword" class="form-label">Ключевое слово</label>
+                        <input type="text" class="form-control" id="keyword" name="keyword" value="кредит наличными быстро" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Геолокация</label>
+                        <input type="text" class="form-control" id="location" name="location" value="Москва" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="device" class="form-label">Устройство</label>
+                        <select class="form-select" id="device" name="device">
+                            <option value="desktop" selected>Десктоп</option>
+                            <option value="mobile">Мобильное устройство</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Выполнить поиск</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

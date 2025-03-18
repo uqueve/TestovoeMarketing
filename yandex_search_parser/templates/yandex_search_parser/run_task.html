@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Запуск задачи парсинга{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Запуск задачи парсинга Яндекса</h1>
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="keyword" class="form-label">Ключевое слово</label>
+                    <input type="text" class="form-control" id="keyword" name="keyword" value="кредит наличными быстро" required>
+                    <div class="form-text">Введите ключевое слово для поиска</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="location" class="form-label">Геолокация</label>
+                    <input type="text" class="form-control" id="location" name="location" value="Москва" required>
+                    <div class="form-text">Введите город для поиска</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="device" class="form-label">Устройство</label>
+                    <select class="form-select" id="device" name="device">
+                        <option value="desktop" selected>Десктоп</option>
+                        <option value="mobile">Мобильное устройство</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Запустить задачу</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <a href="{% url 'search' %}" class="btn btn-secondary">Вернуться к поиску</a>
+    </div>
+</div>
+{% endblock %} 
